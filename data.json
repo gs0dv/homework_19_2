@@ -1,0 +1,78 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "category_name": "Овощи",
+      "category_description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "category_name": "Фрукты",
+      "category_description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "category_name": "Рыба",
+      "category_description": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "product_name": "Помидоры",
+      "product_description": "",
+      "preview_image": "",
+      "category": 1,
+      "price": 100.0,
+      "date_create": null,
+      "date_modify": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "product_name": "Огурцы",
+      "product_description": null,
+      "preview_image": "",
+      "category": 1,
+      "price": 200.0,
+      "date_create": null,
+      "date_modify": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "product_name": "Яблоки",
+      "product_description": null,
+      "preview_image": "",
+      "category": 2,
+      "price": null,
+      "date_create": null,
+      "date_modify": null
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "product_name": "Груши",
+      "product_description": null,
+      "preview_image": "",
+      "category": 2,
+      "price": 250.0,
+      "date_create": null,
+      "date_modify": null
+    }
+  }
+]
