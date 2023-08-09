@@ -1,0 +1,37 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ object_list.product_name|title }}</h1>
+</div>
+<div class="row text-center">
+    <div class="col-4">
+        <div class="card mb-4 box-shadow">
+            <div class="card-body">
+                <img class="card-img-top"
+                     src="{% mediapath object_list.preview_image %}"
+                     alt="Card image cap">
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">О товаре</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">{{ object_list.price }} руб/кг</h1>
+                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                    <li class="mb-2">Категория: {{ object_list.category|title }}</li>
+                    <li class="mb-2">Описание: {{ object_list.product_description }}</li>
+                    <li class="mb-2">Дата создания: {{ object_list.date_create }}</li>
+                    <li class="mb-2">Дата последнего изменения: {{ object_list.date_modify }}</li>
+                </ul>
+                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
