@@ -16,7 +16,7 @@
             <div class="card-body">
                 <h1 class="card-title pricing-card-title">{{ object.price }} руб/кг</h1>
                 <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                    {{ object.product_description|slice:':100' }}
+                    {{ object.product_description|truncatechars:100 }}
                 </ul>
                 <a href="{% url 'catalog:products' object.pk %}" type="button"
                    class="btn btn-lg btn-block btn-outline-primary">О товаре</a>
