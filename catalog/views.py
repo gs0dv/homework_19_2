@@ -1,17 +1,25 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 
 from catalog.models import Product
 
 main_title = 'Магазин продуктов'
 
 
-def home(request):
-    context = {
-        'object_list': Product.objects.all(),
+class ProductListView(ListView):
+    model = Product
+    extra_context = {
         'title': main_title
     }
 
-    return render(request, 'catalog/home.html', context)
+
+# def home(request):
+#     context = {
+#         'object_list': Product.objects.all(),
+#         'title': main_title
+#     }
+#
+#     return render(request, 'catalog/product_list.html', context)
 
 
 def contact(request):
@@ -27,9 +35,20 @@ def contact(request):
     return render(request, 'catalog/contacts.html', content)
 
 
-def products(request, pk):
-    context = {
-        'object_list': Product.objects.get(pk=pk),
+class ProductDetailView(DetailView):
+    model = Product
+    extra_context = {
         'title': main_title
     }
-    return render(request, 'catalog/products.html', context)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['object_list'] = Product.objects.get(pk=self.kwargs.get('pk'))
+        return context_data
+
+# def products(request, pk):
+#     context = {
+#         'object_list': Product.objects.get(pk=pk),
+#         'title': main_title
+#     }
+#     return render(request, 'catalog/product_detail.html', context)
