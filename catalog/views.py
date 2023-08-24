@@ -35,13 +35,13 @@ class ProductUpdateView(UpdateView):
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
 
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        Version.objects.create(product_id=self.object.pk, version_number=1)
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        # version_item = Version.objects.get(product_id=self.kwargs.get('pk'))
+        version_list = Version.objects.all()
 
-
-        return self.object
-
+        context_data['version_list'] = version_list
+        return context_data
 
 # def home(request):
 #     context = {

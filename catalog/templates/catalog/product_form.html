@@ -28,5 +28,32 @@
             </div>
         </div>
     </div>
+    <div class="col-6">
+        {% if object %}
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Номер версии</th>
+                <th scope="col">Название версии</th>
+                <th scope="col">Текущая версия</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for version_item in version_list %}
+            {% if version_item.product_id == object.pk %}
+            <tr>
+                <td>{{ version_item.version_number }}</td>
+                <td>{{ version_item.version_name }}</td>
+                <td>{{ version_item.is_current_version }}</td>
+
+            </tr>
+
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% endif %}
+    </div>
 </form>
 {% endblock %}
