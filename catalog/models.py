@@ -6,6 +6,7 @@ NULLABLE = {'blank': True, 'null': True}
 class Category(models.Model):
     category_name = models.CharField(max_length=250, verbose_name='наименование')
     category_description = models.TextField(verbose_name='описание', **NULLABLE)
+
     # create_at = models.TextField(verbose_name='создано', **NULLABLE)
 
     def __str__(self):
@@ -31,3 +32,17 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='продукт')
+    version_number = models.IntegerField(default=0, verbose_name='номер версии')
+    version_name = models.CharField(max_length=150, verbose_name='название версии', **NULLABLE)
+    is_current_version = models.BooleanField(default=True, verbose_name='признак текущей версии')
+
+    def __str__(self):
+        return f'{self.version_number} ({self.version_name})'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'

@@ -6,12 +6,25 @@
     <h1 class="display-4">{{ title }}</h1>
     <p class="lead"> Лучший магазин продуктов</p>
 </div>
+<div class="row">
+    <div class="col-12 mb-5">
+        <a class="btn btn-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+    </div>
+</div>
 <div class="row text-center">
     {% for object in object_list %}
     <div class="col-3">
         <div class="card mb-4 box-shadow">
             <div class="card-header">
                 <h4 class="my-0 font-weight-normal">{{ object.product_name|title }}</h4>
+                <div class="">
+                    {% for version_item in version_list %}
+                        {% if version_item.product_id == object.pk and version_item.is_current_version %}
+                        Версия продукта {{ version_item.version_number }}
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
             <div class="card-body">
                 <h1 class="card-title pricing-card-title">{{ object.price }} руб/кг</h1>
@@ -20,6 +33,10 @@
                 </ul>
                 <a href="{% url 'catalog:products' object.pk %}" type="button"
                    class="btn btn-lg btn-block btn-outline-primary">О товаре</a>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-link">Изменить</a>
+                <a href="{% url 'catalog:product_delete' object.pk %}" class="btn btn-outline-danger float-right">Удалить</a>
             </div>
         </div>
     </div>
