@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 import catalog
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
 
 main_title = 'Магазин продуктов'
@@ -30,6 +30,36 @@ class ProductCreateView(CreateView):
     success_url = reverse_lazy('catalog:home')
 
 
+class VersionCreateView(CreateView):
+    model = Version
+    form_class = VersionForm
+    success_url = reverse_lazy('catalog:home')
+
+    def get_last_number_version(self, number_pk):
+        try:
+            version = Version.objects.filter(product_id=number_pk, is_current_version=True)
+            return version[0].version_number
+        except Exception:
+            return 0
+
+    def deactivate_versions(self, number_pk):
+        try:
+            versions = Version.objects.filter(product_id=number_pk).update(is_current_version=False)
+
+        except Exception:
+            return 0
+
+    def get_initial(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        number_version = self.get_last_number_version(pk) + 1
+        self.deactivate_versions(pk)
+        return {'product': pk,
+                'version_number': number_version}
+
+    def my_deactivate(self, **kwargs):
+        print(kwargs.get('pk'))
+
+
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
@@ -42,6 +72,7 @@ class ProductUpdateView(UpdateView):
 
         context_data['version_list'] = version_list
         return context_data
+
 
 # def home(request):
 #     context = {

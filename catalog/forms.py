@@ -1,6 +1,6 @@
 from django import forms
 
-from catalog.models import Product
+from catalog.models import Product, Version
 
 
 class StyleFormMixin:
@@ -30,3 +30,10 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
 
         if cleaned_data.lower() in self.FORBIDDEN_WORDS:
             raise forms.ValidationError('Описание состоит из запрещенных слов!')
+        return cleaned_data
+
+
+class VersionForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Version
+        exclude = ('is_current_version',)
