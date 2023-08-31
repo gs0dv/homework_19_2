@@ -6,11 +6,13 @@
     <h1 class="display-4">{{ title }}</h1>
     <p class="lead"> Лучший магазин продуктов</p>
 </div>
+{% if user.is_authenticated %}
 <div class="row">
     <div class="col-12 mb-5">
         <a class="btn btn-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
     </div>
 </div>
+{% endif %}
 <div class="row text-center">
     {% for object in object_list %}
     <div class="col-3">
@@ -32,12 +34,15 @@
                     {{ object.product_description|truncatechars:100 }}
                 </ul>
                 <a href="{% url 'catalog:products' object.pk %}" type="button"
-                   class="btn btn-lg btn-block btn-outline-primary">О товаре</a>
+                   class="btn btn-lg btn-block btn-outline-primary">О товаре</a><hr>
+                Товар добавил {{ object.owner|default:"admin" }}
             </div>
+            {% if user.is_authenticated %}
             <div class="card-footer">
                 <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-link">Изменить</a>
                 <a href="{% url 'catalog:product_delete' object.pk %}" class="btn btn-outline-danger float-right">Удалить</a>
             </div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
