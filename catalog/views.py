@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -14,6 +16,16 @@ class ProductListView(ListView):
     extra_context = {
         'title': main_title
     }
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        # queryset = queryset.filter(
+        #     category_id=self.kwargs.get('pk'),
+        #     # owner=self.request.user
+        # )
+        # if not self.request.user.is_staff:
+        #     queryset = queryset.filter(owner=self.request.user)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -68,8 +80,23 @@ class VersionCreateView(CreateView):
 
 class ProductUpdateView(UpdateView):
     model = Product
+
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+
+        user = self.request.user
+        if self.object.owner != user and not user.is_staff:
+            return Http404
+
+        if user.is_staff:
+            self.object = super().get_object(queryset)
+            self.object.is_published = False
+            self.object.save()
+
+        return self.object
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)

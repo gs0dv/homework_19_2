@@ -29,12 +29,20 @@ class Product(models.Model):
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
 
+    is_published = models.BooleanField(default=False)
+
     def __str__(self):
         return f'{self.product_name} ({self.price})'
 
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+        permissions = [
+            (
+                'set_published',
+                'Can publish products'
+            )
+        ]
 
 
 class Version(models.Model):
