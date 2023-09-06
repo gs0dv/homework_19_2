@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 import catalog
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
+from catalog.services import get_category_list_cache
 
 main_title = 'Магазин продуктов'
 
@@ -31,7 +32,6 @@ class ProductListView(ListView):
         context_data = super().get_context_data(**kwargs)
         # version_item = Version.objects.get(product_id=self.kwargs.get('pk'))
         version_list = Version.objects.all()
-
         context_data['version_list'] = version_list
         return context_data
 
@@ -46,6 +46,11 @@ class ProductCreateView(CreateView):
         self.object.owner = self.request.user
         self.object.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['category_list'] = get_category_list_cache()
+        return context_data
 
 
 class VersionCreateView(CreateView):
